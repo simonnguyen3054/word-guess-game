@@ -1,67 +1,93 @@
-// 3. Use key events to listen for the letters that your players will type.
-
-// 4. Display the following on the page:
-
-// 5. Press any key to get started!
-
-
-// 6. Wins: (# of times user guessed the word correctly).
-
-//    * If the word is `madonna`, display it like this when the game starts: `_ _ _ _ _ _ _`.
-
-//    * As the user guesses the correct letters, reveal them: `m a d o _  _ a`.
-
-// 7. Number of Guesses Remaining: (# of guesses remaining for the user).
-
-// 8. Letters Already Guessed: (Letters the user has guessed, displayed like `L Z Y H`).
-
-// 9. After the user wins/loses the game should automatically choose another word and make the user play it.
-
-
-//============================================//
-//1) Problem: Prompt the user to start the game
-//1) Solution: in html add div element "Press any key to get started!"
-
-//1a) Problem: what are the initial values of the game when it starts.
-//    Solution: Set initial value of a game in a function. Call the function when lose/win event takes place
-
-// function startGame () {
-//   document.querySelector('#win').innerText = 0;
-//   document.querySelector('#name').innerText = "country";
-//   document.querySelector('#remaining-guesses').innerText = 10;
-// }
-
-// document.onkeypress = startGame;
-
-//2) Problem: Add the number of times user win
-//2) Solution: First show default value is 0. Then increment 1 when user guess right.
-
-// var wins = 0;
-// function correctGuess() {
-//   wins++;
-//   document.querySelector('#win').innerText = wins;
-// }
-
-// document.onkeypress = correctGuess;
-
-//3) Problem: Display the number of blank letters to fill in based on the letter number of the word
-//3) Solution:
-// - Select randomly the word from the array of words. Store the word in a variable
-// - Loop through the word and replace with _ for each index of the string. Display _ on html
-
-var countries = ["England", "France", "Brazil", "Russia", "Korea"];
+var correctGuess = 0;
+var countries = ["Viet Nam", "China", "North Korea", "France"];
 var randomCountryIndex = Math.floor(Math.random() * countries.length);
 var randomCountrySelected = countries[randomCountryIndex];
 
-for (i=0; i < randomCountrySelected.length; i++){
-  var underscore = randomCountrySelected[i].replace(randomCountrySelected[i], '_');
-  document.getElementById('#country-selected').innerText = "hw"
-  console.log(underscore);
+var wins_span = document.querySelector('#win');
+var countryTeam_span = document.querySelector('#country-selected');
+var remainingGuesses = document.querySelector('#remaining-guesses');
 
+// Start the game
+  function startGame() {
+    wins_span.innerText = 0;
+    countryTeam_span.innerText = randomCountrySelected;
+    remainingGuesses.innerText = 9;
+  }
+
+//Increment correct guess by 1
+function correctGuess() {
+  correctGuess++;
+  wins_span.innerText = correctGuess;
 }
+
+//Hide the characters of the country team and turn to blanks
+function hideCharacters(countryTeam) {
+  var stringArr = countryTeam.split(" ");
+
+  if(stringArr.length == 2){
+    var blank1 = "";
+    var blank2 = "";
+    var string1 = stringArr[0];
+    var string2 = stringArr[1];
+
+    for (var i = 0; i < string1.length; i++) {
+      blank1 = blank1.concat("_");
+    }
+
+    for (var j = 0; j < string2.length; j++) {
+      blank2 = blank1.concat("_");
+    }
+
+    return blank1 + " " + blank2;
+  } else {
+    var string1 = stringArr[0];
+    var blank1 = "";
+
+    for (var i = 0; i < string1.length; i++) {
+      blank1 = blank1.concat("_");
+    }
+    return blank1;
+  }
+}
+
+var hiddenCountryName = hideCharacters(randomCountrySelected);
+console.log(hiddenCountryName);
+countryTeam_span.innerText = hiddenCountryName;
 
 //4) Problem: As the user guesses the correct letters, reveal them: `m a d o _  _ a`.
 //4) Solution: Use indexOf to determine if the letter exists. If letter exists (0). Replace _ with that letter.
+
+        // //What is the user guess?
+        // var userGuess = "";
+
+        // function checkAnswer(event) {
+        //   //Store they key user press in the variable
+        //   userGuess = event.key;
+
+        //   //Store the letter index user selected if it exists in the country selected
+        //   var letterIndex = randomCountrySelected.toLowerCase().indexOf(userGuess);
+        //   // 'f is at index 0 in the country name'
+        //   var correctLetter = randomCountrySelected[letterIndex];
+        //   var currentString = document.querySelector('#country-selected').textContent;
+        //   console.log(correctLetter);
+
+        //   for (i = 0; i < currentString.length; i++) {
+        //     if (currentString[i] == '_' && randomCountrySelected[i] == correctLetter) {
+        //       var letterToReplace = currentString[i].replace(currentString[i], correctLetter);
+        //       var selectedStrToReplace = document.querySelector('#country-selected');
+        //       selectedStrToReplace.innerText = letterToReplace;
+        //       console.log("correct")
+        //     }
+
+        //     //undefined is equal to not exist
+        //     // if (correctLetter == undefined) {
+        //     //   console.log("Select another letter")
+        //     // }
+        //   }
+
+        // }
+
+        // document.onkeypress = checkAnswer;
 
 //5) Problem: Number of Guesses Remaining: (# of guesses remaining for the user)
 //6) Solution:
