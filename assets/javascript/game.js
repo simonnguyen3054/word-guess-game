@@ -1,11 +1,14 @@
 var correctGuess = 0;
-var countries = ["Viet Nam", "China", "North Korea", "France"];
+var countries = ["russia", "costa rica", "argentina", "mexico", "brazil", "saudi arabia", "south korea"];
 var randomCountryIndex = Math.floor(Math.random() * countries.length);
 var randomCountrySelected = countries[randomCountryIndex];
 
 var wins_span = document.querySelector('#win');
 var countryTeam_span = document.querySelector('#country-selected');
 var remainingGuesses = document.querySelector('#remaining-guesses');
+
+var hiddenCountryName = hideCharacters(randomCountrySelected);
+countryTeam_span.innerText = hiddenCountryName;
 
 // Start the game
   function startGame() {
@@ -35,10 +38,12 @@ function hideCharacters(countryTeam) {
     }
 
     for (var j = 0; j < string2.length; j++) {
-      blank2 = blank1.concat("_");
+      blank2 = blank2.concat("_");
     }
 
-    return blank1 + " " + blank2;
+    var blank =  blank1 + " " + blank2;
+    return blank;
+
   } else {
     var string1 = stringArr[0];
     var blank1 = "";
@@ -50,44 +55,31 @@ function hideCharacters(countryTeam) {
   }
 }
 
-var hiddenCountryName = hideCharacters(randomCountrySelected);
-console.log(hiddenCountryName);
-countryTeam_span.innerText = hiddenCountryName;
+function checkAnswer(event) {
+  var userGuess = event.key;
+  var letterIndices = [];
 
-//4) Problem: As the user guesses the correct letters, reveal them: `m a d o _  _ a`.
-//4) Solution: Use indexOf to determine if the letter exists. If letter exists (0). Replace _ with that letter.
+  //Find index and loop through push to new array
+  for (var letterIndex = 0; letterIndex < randomCountrySelected.length; letterIndex++ ) {
+    if(userGuess == randomCountrySelected[letterIndex]) {
+      letterIndices.push(letterIndex);
+    }
+  }
 
-        // //What is the user guess?
-        // var userGuess = "";
+  //function to replace char
+  String.prototype.strReplace = function(index, letterToReplace) {
+    return this.substr(0, index) + letterToReplace+ this.substr(index + letterToReplace.length);
+  }
 
-        // function checkAnswer(event) {
-        //   //Store they key user press in the variable
-        //   userGuess = event.key;
+  //Take out letter at specific index
+  for (var a = 0; a < letterIndices.length; a++ ) {
+    hiddenCountryName = hiddenCountryName.strReplace(letterIndices[a], userGuess);
+  }
+  countryTeam_span.innerText = hiddenCountryName;
+}
 
-        //   //Store the letter index user selected if it exists in the country selected
-        //   var letterIndex = randomCountrySelected.toLowerCase().indexOf(userGuess);
-        //   // 'f is at index 0 in the country name'
-        //   var correctLetter = randomCountrySelected[letterIndex];
-        //   var currentString = document.querySelector('#country-selected').textContent;
-        //   console.log(correctLetter);
-
-        //   for (i = 0; i < currentString.length; i++) {
-        //     if (currentString[i] == '_' && randomCountrySelected[i] == correctLetter) {
-        //       var letterToReplace = currentString[i].replace(currentString[i], correctLetter);
-        //       var selectedStrToReplace = document.querySelector('#country-selected');
-        //       selectedStrToReplace.innerText = letterToReplace;
-        //       console.log("correct")
-        //     }
-
-        //     //undefined is equal to not exist
-        //     // if (correctLetter == undefined) {
-        //     //   console.log("Select another letter")
-        //     // }
-        //   }
-
-        // }
-
-        // document.onkeypress = checkAnswer;
+console.log(randomCountrySelected);
+document.onkeypress = checkAnswer;
 
 //5) Problem: Number of Guesses Remaining: (# of guesses remaining for the user)
 //6) Solution:
