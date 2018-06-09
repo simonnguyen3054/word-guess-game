@@ -1,35 +1,18 @@
-
-var resetGame = function() {
-  remainingGuesses = 10;
-  remainingGuesses_span.innerText = remainingGuesses;
-
-  randomCountryIndex = Math.floor(Math.random() * countries.length);
-  randomCountrySelected = countries[randomCountryIndex];
-  console.log(randomCountrySelected);
-
-  hiddenCountryName = hideCharacters(randomCountrySelected);
-  countryTeam_span.innerText = hiddenCountryName;
-
-  incorrectChars = ""
-  incorrectGuesses_span.innerText = incorrectChars;
-};
-
 //this var needs to set globally
 var incorrectChars = "";
-
-var countries = ["russia", "costa rica", "argentina", "mexico", "brazil", "saudi arabia", "south korea", "germany", "spain", "portugal", "france", "belgium", "japan", "australia"];
+var countries = ["russia", "costa rica", "argentina", "mexico", "brazil", "saudi arabia", "korea republic", "germany", "spain", "portugal", "france", "belgium", "japan", "australia",
+"egypt", "morocco", "nigeria", "senegal", "tunisia", "iran", "croatia", "denmark", "iceland", "poland", "serbia", "sweden", "switzerland", "panama", "columbia", "peru", "uruguay"];
 
 var wins_span = document.querySelector('#win');
 var countryTeam_span = document.querySelector('#country-selected');
 var remainingGuesses_span = document.querySelector('#remaining-guesses');
 var incorrectGuesses_span = document.querySelector('#incorrect-guesses');
 var gameStatus_span = document.querySelector('#game-status');
-
 var randomCountryIndex = Math.floor(Math.random() * countries.length);
 var randomCountrySelected = countries[randomCountryIndex];
 console.log(randomCountrySelected);
 
-//Hide the characters of the country team and turn to blanks
+//Function to hide all char
 function hideCharacters(countryTeam) {
   var stringArr = countryTeam.split(" ");
 
@@ -74,7 +57,7 @@ var hiddenCountryName = hideCharacters(randomCountrySelected);
     countryTeam_span.innerText = hiddenCountryName;
 
 //Check answer function
-function checkAnswer(event) {
+function checkAnswer(event,) {
   var userGuess = event.key;
   var letterIndices = [];
 
@@ -98,8 +81,7 @@ function checkAnswer(event) {
       if (hiddenCountryName == randomCountrySelected) {
         wins++;
         wins_span.innerText = wins;
-        gameStatus_span.innerHTML = "You have won the game"
-        //restart the game
+        gameStatus_span.innerHTML = "You have won the game. Click the restart button to restart the game"
       }
     }
   }
@@ -115,25 +97,28 @@ function checkAnswer(event) {
     //if guesses hit 0 restart the game
     if (remainingGuesses == 0) {
       gameStatus_span.innerHTML = "You have lost the game"
+      resetGame();
     }
   }
 }
 
+function resetGame() {
+  remainingGuesses = 10;
+  remainingGuesses_span.innerText = remainingGuesses;
+
+  randomCountryIndex = Math.floor(Math.random() * countries.length);
+  randomCountrySelected = countries[randomCountryIndex];
+  console.log(randomCountrySelected);
+
+  hiddenCountryName = hideCharacters(randomCountrySelected);
+  countryTeam_span.innerText = hiddenCountryName;
+
+  incorrectChars = ""
+  incorrectGuesses_span.innerText = incorrectChars;
+
+  gameStatus_span.innerHTML = "";
+};
+
+
 document.onkeypress = checkAnswer;
 document.onclick = resetGame;
-
-//5) Problem: Number of Guesses Remaining: (# of guesses remaining for the user)
-
-//6) Solution:
-// - Count how many letters in the word and add 3 to it. Display the initial number of guesses the user is given.
-// - Subtract 1 from the number of guesses everytime the user press a key until 0.
-//When user hits 0, refresh with new game. Set all values back to initial values
-
-//7) Letters Already Guessed: (Letters the user has guessed, displayed like `L Z Y H`).
-//7) Solution:
-//  - Store each key that user guess in an array. Display the array to the html.
-//  - Loop through the array to compare if each value of the index is equal to the key user entered. If value is equal then do not add the letter to the array and do not display in html
-
-//8 - refresh the game if user guess all letters right in the word
-//Set all values back to initial values
-

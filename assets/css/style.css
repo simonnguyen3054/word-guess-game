@@ -1,0 +1,37 @@
+/* body {
+  background: url("../images/world_cup.jpg") no-repeat center center fixed;
+  background-size: cover;
+  background-image: linear-gradient(#c31432,#240b36);
+	opacity: .6;
+} */
+
+body {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../images/world_cup.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+
+header {
+  font-size: 300%;
+  color: coral;
+  font-family: 'Jua', sans-serif;
+}
+
+
+#gameboard {
+  padding-top: 120px;
+  font-size: 300%;
+  color: white;
+  font-family: 'Jua', sans-serif;
+}
+
+#country-selected, #incorrect-guesses {
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  color: coral;
+}
+
+#remaining-guesses {
+  color: coral;
+}
