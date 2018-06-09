@@ -10,7 +10,6 @@ var incorrectGuesses_span = document.querySelector('#incorrect-guesses');
 var gameStatus_span = document.querySelector('#game-status');
 var randomCountryIndex = Math.floor(Math.random() * countries.length);
 var randomCountrySelected = countries[randomCountryIndex];
-console.log(randomCountrySelected);
 
 //Function to hide all char
 function hideCharacters(countryTeam) {
@@ -57,48 +56,55 @@ var hiddenCountryName = hideCharacters(randomCountrySelected);
     countryTeam_span.innerText = hiddenCountryName;
 
 //Check answer function
-function checkAnswer(event,) {
+function checkAnswer(event) {
   var userGuess = event.key;
   var letterIndices = [];
 
-  //answer correct
-  for (var letterIndex = 0; letterIndex < randomCountrySelected.length; letterIndex++ ) {
-    //If char is guessed correctly
-    if(userGuess == randomCountrySelected[letterIndex]) {
-      letterIndices.push(letterIndex);
-      //function to replace char
-      String.prototype.strReplace = function(index, letterToReplace) {
-        return this.substr(0, index) + letterToReplace+ this.substr(index + letterToReplace.length);
-      }
+  if (hiddenCountryName !== randomCountrySelected) {
+    //continue the game
+    //answer correct
+    for (var letterIndex = 0; letterIndex < randomCountrySelected.length; letterIndex++ ) {
+      //If char is guessed correctly
+      if(userGuess == randomCountrySelected[letterIndex]) {
+        letterIndices.push(letterIndex);
+        //function to replace char
+        String.prototype.strReplace = function(index, letterToReplace) {
+          return this.substr(0, index) + letterToReplace+ this.substr(index + letterToReplace.length);
+        }
 
-      //Take out letter at specific index and replace with correct char
-      for (var a = 0; a < letterIndices.length; a++ ) {
-        hiddenCountryName = hiddenCountryName.strReplace(letterIndices[a], userGuess);
-      }
-      countryTeam_span.innerText = hiddenCountryName;
+        //Take out letter at specific index and replace with correct char
+        for (var a = 0; a < letterIndices.length; a++ ) {
+          hiddenCountryName = hiddenCountryName.strReplace(letterIndices[a], userGuess);
+        }
+        countryTeam_span.innerText = hiddenCountryName;
 
-      //increment win by 1
-      if (hiddenCountryName == randomCountrySelected) {
-        wins++;
-        wins_span.innerText = wins;
-        gameStatus_span.innerHTML = "You have won the game. Click the restart button to restart the game"
+        //increment win by 1
+        if (hiddenCountryName == randomCountrySelected) {
+          wins++;
+          wins_span.innerText = wins;
+          // gameStatus_span.innerHTML = "You have won the game. Click the restart button to restart the game"
+          // resetGame();
+        }
       }
     }
-  }
 
-  //Answered Incorrect
-  if (randomCountrySelected.indexOf(userGuess) == -1 && incorrectChars.includes(userGuess) === false ) {
+    //Answered Incorrect
+    if (randomCountrySelected.indexOf(userGuess) == -1 && incorrectChars.includes(userGuess) === false ) {
 
-    incorrectChars = incorrectChars + userGuess;
-    remainingGuesses = remainingGuesses - 1;
-    remainingGuesses_span.innerText = remainingGuesses;
-    incorrectGuesses_span.innerText = incorrectChars;
+      incorrectChars = incorrectChars + userGuess;
+      remainingGuesses = remainingGuesses - 1;
+      remainingGuesses_span.innerText = remainingGuesses;
+      incorrectGuesses_span.innerText = incorrectChars;
 
-    //if guesses hit 0 restart the game
-    if (remainingGuesses == 0) {
-      gameStatus_span.innerHTML = "You have lost the game"
-      resetGame();
+      //if guesses hit 0 restart the game
+      if (remainingGuesses == 0) {
+        gameStatus_span.innerHTML = "You have lost the game"
+        resetGame();
+      }
+
     }
+  } else {
+    resetGame();
   }
 }
 
@@ -108,7 +114,6 @@ function resetGame() {
 
   randomCountryIndex = Math.floor(Math.random() * countries.length);
   randomCountrySelected = countries[randomCountryIndex];
-  console.log(randomCountrySelected);
 
   hiddenCountryName = hideCharacters(randomCountrySelected);
   countryTeam_span.innerText = hiddenCountryName;
@@ -119,6 +124,4 @@ function resetGame() {
   gameStatus_span.innerHTML = "";
 };
 
-
 document.onkeypress = checkAnswer;
-document.onclick = resetGame;
