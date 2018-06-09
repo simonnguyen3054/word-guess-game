@@ -6,7 +6,8 @@
 } */
 
 body {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../images/world_cup.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("../images/world_cup.jpg");
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -15,23 +16,27 @@ body {
 header {
   font-size: 300%;
   color: coral;
-  font-family: 'Jua', sans-serif;
+  font-family: "Jua", sans-serif;
 }
-
 
 #gameboard {
   padding-top: 120px;
   font-size: 300%;
   color: white;
-  font-family: 'Jua', sans-serif;
+  font-family: "Jua", sans-serif;
 }
 
-#country-selected, #incorrect-guesses {
+#country-selected,
+#incorrect-guesses {
   text-transform: uppercase;
   letter-spacing: 5px;
   color: coral;
 }
 
 #remaining-guesses {
+  color: coral;
+}
+
+.modal {
   color: coral;
 }

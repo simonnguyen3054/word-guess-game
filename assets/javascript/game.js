@@ -8,6 +8,7 @@ var countryTeam_span = document.querySelector('#country-selected');
 var remainingGuesses_span = document.querySelector('#remaining-guesses');
 var incorrectGuesses_span = document.querySelector('#incorrect-guesses');
 var gameStatus_span = document.querySelector('#game-status');
+var gameStatus = document.querySelector('#status');
 var randomCountryIndex = Math.floor(Math.random() * countries.length);
 var randomCountrySelected = countries[randomCountryIndex];
 
@@ -42,6 +43,22 @@ function hideCharacters(countryTeam) {
     return blank1;
   }
 }
+
+function resetGame() {
+  remainingGuesses = 10;
+  remainingGuesses_span.innerText = remainingGuesses;
+
+  randomCountryIndex = Math.floor(Math.random() * countries.length);
+  randomCountrySelected = countries[randomCountryIndex];
+
+  hiddenCountryName = hideCharacters(randomCountrySelected);
+  countryTeam_span.innerText = hiddenCountryName;
+
+  incorrectChars = ""
+  incorrectGuesses_span.innerText = incorrectChars;
+
+  gameStatus_span.innerHTML = "";
+};
 
 //show the win score
 var wins = 0;
@@ -82,8 +99,8 @@ function checkAnswer(event) {
         if (hiddenCountryName == randomCountrySelected) {
           wins++;
           wins_span.innerText = wins;
-          // gameStatus_span.innerHTML = "You have won the game. Click the restart button to restart the game"
-          // resetGame();
+          gameStatus.innerText = "You Won!";
+          $('#statusModal').modal('show');
         }
       }
     }
@@ -98,7 +115,8 @@ function checkAnswer(event) {
 
       //if guesses hit 0 restart the game
       if (remainingGuesses == 0) {
-        gameStatus_span.innerHTML = "You have lost the game"
+        gameStatus.innerText = "You Lost!";
+        $('#statusModal').modal('show');
         resetGame();
       }
 
@@ -107,21 +125,5 @@ function checkAnswer(event) {
     resetGame();
   }
 }
-
-function resetGame() {
-  remainingGuesses = 10;
-  remainingGuesses_span.innerText = remainingGuesses;
-
-  randomCountryIndex = Math.floor(Math.random() * countries.length);
-  randomCountrySelected = countries[randomCountryIndex];
-
-  hiddenCountryName = hideCharacters(randomCountrySelected);
-  countryTeam_span.innerText = hiddenCountryName;
-
-  incorrectChars = ""
-  incorrectGuesses_span.innerText = incorrectChars;
-
-  gameStatus_span.innerHTML = "";
-};
 
 document.onkeypress = checkAnswer;
