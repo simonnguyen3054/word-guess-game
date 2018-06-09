@@ -1,10 +1,11 @@
-#World Cup 2018 - Guess the Winner
+# World Cup 2018 - Guess the Winner
 
-###A Word Guessing Game
+### A Word Guessing Game
 
-#####Player can press any key to start playing the game.
+##### Player can press any key to start playing the game.
 
-#####Rules of the game:
+##### Rules of the game:
+
 * Press any key
 * If key matches one of the letters in the country team name that participated in the World Cup 2018 tourament, the letter displays to the player.
 * When user guessed all letters correctly, a modal pops up
