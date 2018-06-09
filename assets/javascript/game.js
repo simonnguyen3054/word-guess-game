@@ -1,27 +1,33 @@
-var correctGuess = 0;
-var countries = ["russia", "costa rica", "argentina", "mexico", "brazil", "saudi arabia", "south korea"];
-var randomCountryIndex = Math.floor(Math.random() * countries.length);
-var randomCountrySelected = countries[randomCountryIndex];
+
+var resetGame = function() {
+  remainingGuesses = 10;
+  remainingGuesses_span.innerText = remainingGuesses;
+
+  randomCountryIndex = Math.floor(Math.random() * countries.length);
+  randomCountrySelected = countries[randomCountryIndex];
+  console.log(randomCountrySelected);
+
+  hiddenCountryName = hideCharacters(randomCountrySelected);
+  countryTeam_span.innerText = hiddenCountryName;
+
+  incorrectChars = ""
+  incorrectGuesses_span.innerText = incorrectChars;
+};
+
+//this var needs to set globally
+var incorrectChars = "";
+
+var countries = ["russia", "costa rica", "argentina", "mexico", "brazil", "saudi arabia", "south korea", "germany", "spain", "portugal", "france", "belgium", "japan", "australia"];
 
 var wins_span = document.querySelector('#win');
 var countryTeam_span = document.querySelector('#country-selected');
-var remainingGuesses = document.querySelector('#remaining-guesses');
+var remainingGuesses_span = document.querySelector('#remaining-guesses');
+var incorrectGuesses_span = document.querySelector('#incorrect-guesses');
+var gameStatus_span = document.querySelector('#game-status');
 
-var hiddenCountryName = hideCharacters(randomCountrySelected);
-countryTeam_span.innerText = hiddenCountryName;
-
-// Start the game
-  function startGame() {
-    wins_span.innerText = 0;
-    countryTeam_span.innerText = randomCountrySelected;
-    remainingGuesses.innerText = 9;
-  }
-
-//Increment correct guess by 1
-function correctGuess() {
-  correctGuess++;
-  wins_span.innerText = correctGuess;
-}
+var randomCountryIndex = Math.floor(Math.random() * countries.length);
+var randomCountrySelected = countries[randomCountryIndex];
+console.log(randomCountrySelected);
 
 //Hide the characters of the country team and turn to blanks
 function hideCharacters(countryTeam) {
@@ -55,33 +61,69 @@ function hideCharacters(countryTeam) {
   }
 }
 
+//show the win score
+var wins = 0;
+wins_span.innerText = wins;
+
+//show the remaining guesses
+var remainingGuesses = 10;
+remainingGuesses_span.innerText = remainingGuesses;
+
+//show the hidden country team
+var hiddenCountryName = hideCharacters(randomCountrySelected);
+    countryTeam_span.innerText = hiddenCountryName;
+
+//Check answer function
 function checkAnswer(event) {
   var userGuess = event.key;
   var letterIndices = [];
 
-  //Find index and loop through push to new array
+  //answer correct
   for (var letterIndex = 0; letterIndex < randomCountrySelected.length; letterIndex++ ) {
+    //If char is guessed correctly
     if(userGuess == randomCountrySelected[letterIndex]) {
       letterIndices.push(letterIndex);
+      //function to replace char
+      String.prototype.strReplace = function(index, letterToReplace) {
+        return this.substr(0, index) + letterToReplace+ this.substr(index + letterToReplace.length);
+      }
+
+      //Take out letter at specific index and replace with correct char
+      for (var a = 0; a < letterIndices.length; a++ ) {
+        hiddenCountryName = hiddenCountryName.strReplace(letterIndices[a], userGuess);
+      }
+      countryTeam_span.innerText = hiddenCountryName;
+
+      //increment win by 1
+      if (hiddenCountryName == randomCountrySelected) {
+        wins++;
+        wins_span.innerText = wins;
+        gameStatus_span.innerHTML = "You have won the game"
+        //restart the game
+      }
     }
   }
 
-  //function to replace char
-  String.prototype.strReplace = function(index, letterToReplace) {
-    return this.substr(0, index) + letterToReplace+ this.substr(index + letterToReplace.length);
-  }
+  //Answered Incorrect
+  if (randomCountrySelected.indexOf(userGuess) == -1 && incorrectChars.includes(userGuess) === false ) {
 
-  //Take out letter at specific index
-  for (var a = 0; a < letterIndices.length; a++ ) {
-    hiddenCountryName = hiddenCountryName.strReplace(letterIndices[a], userGuess);
+    incorrectChars = incorrectChars + userGuess;
+    remainingGuesses = remainingGuesses - 1;
+    remainingGuesses_span.innerText = remainingGuesses;
+    incorrectGuesses_span.innerText = incorrectChars;
+
+    //if guesses hit 0 restart the game
+    if (remainingGuesses == 0) {
+      gameStatus_span.innerHTML = "You have lost the game"
+    }
   }
-  countryTeam_span.innerText = hiddenCountryName;
 }
 
-console.log(randomCountrySelected);
 document.onkeypress = checkAnswer;
+document.onclick = resetGame;
 
 //5) Problem: Number of Guesses Remaining: (# of guesses remaining for the user)
+
 //6) Solution:
 // - Count how many letters in the word and add 3 to it. Display the initial number of guesses the user is given.
 // - Subtract 1 from the number of guesses everytime the user press a key until 0.
