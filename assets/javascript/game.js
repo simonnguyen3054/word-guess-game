@@ -5,7 +5,7 @@ var countries = ["russia", "costa rica", "argentina", "mexico", "brazil", "saudi
 
 var videos = {
   "costa rica": "https://www.youtube.com/embed/itnXvsTDdp8?autoplay=1",
-  "saudi arabia": "https://www.youtube.com/embed/JetdoFgiYfM?autoplay=1",
+  "saudi arabia": "https://www.youtube.com/embed/LX-xN76vNVQ?autoplay=1",
   "korea republic": "https://www.youtube.com/embed/yAJ4bjpl-dM?autoplay=1",
   egypt: "https://www.youtube.com/embed/PU4zmc-6alc?autoplay=1",
   argentina: "https://www.youtube.com/embed/uWPNg6PUq7Q?autoplay=1",
@@ -156,14 +156,17 @@ function checkAnswer(event) {
                 iframe.setAttribute('src', rawVideoURL);
               }
             }
+            //First set modal to no text. InnerHTML replace everything within modal element
+            modalBody.innerHTML = ""
+            //Then append iframe to the modal
             modalBody.appendChild(iframe);
+
 
             //Trigger modal
             $('#statusModal').modal('show');
-            //When modal is closed, set raw url to not autoplay
+            //When modal is closed, remove iframe to stop the video from playing
             $('#statusModal').on('hidden.bs.modal', function(e) {
-              rawVideoURL = rawVideoURL.replace("?autoplay=1", "");
-              iframe.setAttribute('src', rawVideoURL);
+              modalBody.removeChild(iframe);
           });
         }
       }
@@ -179,20 +182,17 @@ function checkAnswer(event) {
 
       //if guesses hit 0 restart the game
       if (remainingGuesses == 0) {
-       
-        gameStatus.innerText = "You Lost!";
+
+        gameStatus.innerText = "Game Status";
         // //Set attribute for iframe by looping over videoAttr object
         // for (hostKey in videoAttr) {
         //   iframe.setAttribute(hostKey, videoAttr[hostKey])
         // }
 
         // iframe.setAttribute('src', videos['russia']);
+        modalBody.innerHTML = "You Lost! <br> Close the modal and press any key to restart the game."
 
         $('#statusModal').modal('show');
-        // $('#statusModal').on('hidden.bs.modal', function(e) {
-        //   hostVideoURL = hostVideoURL.replace("?autoplay=1", "");
-        //   iframe.setAttribute('src', hostVideoURL);
-        // });
         resetGame();
       }
 
