@@ -15,3 +15,8 @@ displaying to the player the winning status of the game.
 * Every incorrect guess deducts a point and display to the player with the incorrect guessed letter.
 * Player doesn't get points deducted for incorrect guessed letters.
 * Game over when remaining guesses is 0.
+
+##### Update
+* Added YouTube videos to the modal
+* Each correct guess rewards the user with a youtube video that shows the qualification journey of that team getting to the Wolrd Cup 2018 tourament.
+* To Do: Prevent keys to trigger while the modal is shown.
